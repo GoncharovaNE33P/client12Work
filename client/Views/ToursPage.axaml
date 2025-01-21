@@ -1,0 +1,29 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:vm="using:client.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="client.ToursPage"
+			 x:DataType="vm:ToursPageVM">
+	<Grid RowDefinitions="*,8*" ColumnDefinitions="450*,*">
+		<StackPanel Grid.Row="0">
+			
+			<TextBlock Classes="Head" Text="Список туров"></TextBlock>
+		</StackPanel>
+		<ScrollViewer Grid.Row="1">
+			<ListBox ItemsSource="{Binding ToursList}" Background="Transparent">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<Border Classes="Artist">
+							<StackPanel>								
+								<TextBlock Classes="List" Text="{Binding  Name, StringFormat='Название тура: {0}'}"></TextBlock>
+								<TextBlock Classes="List" Text="{Binding Price , StringFormat='Цена: {0:D}'}"></TextBlock>								
+							</StackPanel>
+						</Border>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+		</ScrollViewer>
+	</Grid>
+</UserControl>
