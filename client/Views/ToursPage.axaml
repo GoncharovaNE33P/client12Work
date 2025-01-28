@@ -12,7 +12,7 @@
 		<conv:ImageConvert x:Key="ImageConvert"></conv:ImageConvert>
 	</UserControl.Resources>
 	
-	<Grid RowDefinitions="*,8*" ColumnDefinitions="450*,*">
+	<Grid RowDefinitions="*,8*">
 		<StackPanel Grid.Row="0">			
 			<TextBlock Classes="Head" Text="Список туров"></TextBlock>
 		</StackPanel>
@@ -25,13 +25,17 @@
 					</ListBox.ItemsPanel>
 				<ListBox.ItemTemplate>
 					<DataTemplate>
-						<Border Classes="Artist">
+						<Border Classes="tours">
 							<StackPanel>								
-								<TextBlock Classes="List" Text="{Binding  Name}"></TextBlock>
-								<Image Source="{Binding ImagePreview, Converter={StaticResource ImageConvert}}" Height="200" Width="200"></Image>
-								<TextBlock Classes="List" Text="{Binding Price, StringFormat='{}{0:N0} РУБ'}"></TextBlock>								
-								<TextBlock Classes="List" Text="{Binding ActualTour}"></TextBlock>								
-								<TextBlock Classes="List" Text="{Binding TicketCount, StringFormat='Билетов: {0}'}"></TextBlock>								
+								<TextBlock Classes="List1" Text="{Binding Name}"></TextBlock>
+								<Border Classes="img">
+									<Image Source="{Binding ImagePreview, Converter={StaticResource ImageConvert}}"></Image>
+								</Border>
+								<TextBlock Classes="List3" Text="{Binding Price, StringFormat='{}{0:N0} РУБ'}"></TextBlock>
+								<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+									<TextBlock Classes="List2" Text="{Binding ActualTour}" Foreground="{Binding ActualTourColor}"></TextBlock>								
+									<TextBlock Padding="120 0 0 0" Classes="List2" Text="{Binding TicketCount, StringFormat='Билетов: {0}'}"></TextBlock>
+								</StackPanel>
 							</StackPanel>
 						</Border>
 					</DataTemplate>

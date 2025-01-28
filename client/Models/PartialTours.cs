@@ -19,5 +19,21 @@ namespace client.Models
                 return "Актуален";
             }
         }
+
+        public string ActualTourColor
+        {
+            get
+            {
+                if (IsActual == 0)
+                {
+                    return "#e31e24";
+                }
+                if (IsActual == 1)
+                {
+                    return "#4ee62e";
+                }
+                return "";
+            }
+        }
     }
 }
