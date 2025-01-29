@@ -5,21 +5,38 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="client.ToursPage"
-			 x:DataType="vm:ToursPageVM">
-	<Grid >
-		<StackPanel >
-			
+			 x:DataType="vm:ToursPageVM"
+			 xmlns:conv="using:client.Converters">
+
+	<UserControl.Resources>
+		<conv:ImageConvert x:Key="ImageConvert"></conv:ImageConvert>
+	</UserControl.Resources>
+	
+	<Grid RowDefinitions="*,8*">
+		<StackPanel Grid.Row="0">			
 			<TextBlock Classes="Head" Text="Список туров"></TextBlock>
 		</StackPanel>
 		<ScrollViewer >
 			<Grid>
 			<ListBox ItemsSource="{Binding ToursList}" Background="Transparent">
+				<ListBox.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel></WrapPanel>
+					</ItemsPanelTemplate>
+					</ListBox.ItemsPanel>
 				<ListBox.ItemTemplate>
 					<DataTemplate>
-						<Border Classes="Artist">
+						<Border Classes="tours">
 							<StackPanel>								
-								<TextBlock  Text="{Binding  Name, StringFormat='Название тура: {0}'}"></TextBlock>
-								<TextBlock  Text="{Binding Price , StringFormat='Цена: {0:D}'}"></TextBlock>								
+								<TextBlock Classes="List1" Text="{Binding Name}"></TextBlock>
+								<Border Classes="img">
+									<Image Source="{Binding ImagePreview, Converter={StaticResource ImageConvert}}"></Image>
+								</Border>
+								<TextBlock Classes="List3" Text="{Binding Price, StringFormat='{}{0:N0} РУБ'}"></TextBlock>
+								<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+									<TextBlock Classes="List2" Text="{Binding ActualTour}" Foreground="{Binding ActualTourColor}"></TextBlock>								
+									<TextBlock Padding="120 0 0 0" Classes="List2" Text="{Binding TicketCount, StringFormat='Билетов: {0}'}"></TextBlock>
+								</StackPanel>
 							</StackPanel>
 						</Border>
 					</DataTemplate>
