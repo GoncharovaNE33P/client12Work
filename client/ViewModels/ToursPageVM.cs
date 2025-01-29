@@ -15,6 +15,8 @@ namespace client.ViewModels
     {
         private readonly HttpClient _httpClient;
 
+        List<Tour> _alltours = new();
+
         List<Tour> _tours;
         public List<Tour> ToursList { get => _tours; set => this.RaiseAndSetIfChanged(ref _tours, value); }
 
@@ -28,7 +30,8 @@ namespace client.ViewModels
         {
             HttpResponseMessage message = await client.GetAsync("/ToursList");
             string buf = await message.Content.ReadAsStringAsync();
-            ToursList = JsonConvert.DeserializeObject<List<Tour>>(buf);
+            _alltours = JsonConvert.DeserializeObject<List<Tour>>(buf);
+            ToursList = new List<Tour>(_alltours);
         }
 
         string _search;
@@ -36,12 +39,13 @@ namespace client.ViewModels
 
         public void filters()
         {
+            ToursList = new List<Tour>(_alltours);
+
             if (!string.IsNullOrEmpty(_search)) 
             {                
                 ToursList = ToursList.Where(x => x.Name.ToLower().Contains(_search.ToLower()) ||
                 x.Description.ToLower().Contains(_search.ToLower())).ToList();
             }
-            else getToursList(_httpClient);
         }
 
     }
