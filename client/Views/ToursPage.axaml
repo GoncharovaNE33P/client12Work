@@ -12,11 +12,15 @@
 		<conv:ImageConvert x:Key="ImageConvert"></conv:ImageConvert>
 	</UserControl.Resources>
 	
-	<Grid RowDefinitions="*,8*">
-		<StackPanel Grid.Row="0">			
+	<Grid RowDefinitions="2*,8*">
+		<StackPanel Grid.Row="0">
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Classes="Head" Text="Введите текст для поиска:"></TextBlock>
+				<TextBox Classes="TBField" Text="{Binding Search}"></TextBox>
+			</StackPanel>
 			<TextBlock Classes="Head" Text="Список туров"></TextBlock>
 		</StackPanel>
-		<ScrollViewer >
+		<ScrollViewer Grid.Row="1">
 			<Grid>
 			<ListBox ItemsSource="{Binding ToursList}" Background="Transparent">
 				<ListBox.ItemsPanel>

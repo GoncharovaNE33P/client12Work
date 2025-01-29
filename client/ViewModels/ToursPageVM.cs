@@ -31,5 +31,18 @@ namespace client.ViewModels
             ToursList = JsonConvert.DeserializeObject<List<Tour>>(buf);
         }
 
+        string _search;
+        public string Search { get => _search; set { _search = this.RaiseAndSetIfChanged(ref _search, value);  filters(); } }
+
+        public void filters()
+        {
+            if (!string.IsNullOrEmpty(_search)) 
+            {                
+                ToursList = ToursList.Where(x => x.Name.ToLower().Contains(_search.ToLower()) ||
+                x.Description.ToLower().Contains(_search.ToLower())).ToList();
+            }
+            else getToursList(_httpClient);
+        }
+
     }
 }
