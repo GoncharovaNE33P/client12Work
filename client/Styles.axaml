@@ -70,10 +70,12 @@
 	<Style Selector="ComboBox.CBField">
 		<Setter Property="FontSize" Value="12"></Setter>
 		<Setter Property="FontWeight" Value="DemiBold"></Setter>
-		<Setter Property="BorderBrush" Value="#5f2568"></Setter>
+		<Setter Property="BorderBrush" Value="#445c93"></Setter>
 		<Setter Property="BorderThickness" Value="3"></Setter>
 		<Setter Property="CornerRadius" Value="3"></Setter>
-		<Setter Property="Height" Value="45"></Setter>
+		<Setter Property="Height" Value="30"></Setter>
+		<Setter Property="Width" Value="300"></Setter>
+		<Setter Property="Margin" Value="10 10 0 0"></Setter>
 	</Style>
 
 	<Style Selector="DatePicker.DPField">

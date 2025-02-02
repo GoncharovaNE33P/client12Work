@@ -8,6 +8,7 @@ using System.Windows.Input;
 using client.Models;
 using ReactiveUI;
 using Newtonsoft.Json;
+using System.Reactive.Subjects;
 
 namespace client.ViewModels
 {
@@ -39,8 +40,8 @@ namespace client.ViewModels
         public string Search { get => _search; set { _search = this.RaiseAndSetIfChanged(ref _search, value);  filters(); } }
 
         List<Models.Type> _types;
-        public List<Models.Type> TypesList { get => _types; set => this.RaiseAndSetIfChanged(ref _types, value); }
-
+        public List<Models.Type> TypesList { get => _types; set { _types = this.RaiseAndSetIfChanged(ref _types, value); filters(); } }
+                
         async Task getTypesList(HttpClient client)
         {
             HttpResponseMessage message = await client.GetAsync("/TypesList");
@@ -48,7 +49,21 @@ namespace client.ViewModels
             TypesList = JsonConvert.DeserializeObject<List<Models.Type>>(buf);
             TypesList = new List<Models.Type> { new Models.Type { Id = 0, Type1 = "Все типы" } }.Concat(TypesList).ToList();
         }
-        
+
+        Models.Type _selectType = null;
+        public Models.Type SelectType
+        {
+            get
+            {
+                if (_selectType == null) return _types[0];
+                else
+                {
+                    return _selectType;
+                }
+            }
+            set { _selectType = value; filters(); }
+        }
+
         public void filters()
         {
             ToursList = new List<Tour>(_alltours);

@@ -20,7 +20,12 @@
 			</StackPanel>
 			<StackPanel Orientation="Horizontal">
 				<TextBlock Classes="Head" Text="Выберите тип:"></TextBlock>
-				<ComboBox>
+				<ComboBox Classes="CBField" SelectedItem="{Binding SelectType}" ItemsSource="{Binding TypesList}">
+					<ComboBox.ItemTemplate>
+						<DataTemplate>
+							<TextBlock Classes="Head" Text="{Binding Type1}"></TextBlock>
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
 					
 				</ComboBox>
 			</StackPanel>
