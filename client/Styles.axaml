@@ -67,25 +67,30 @@
 		<Setter Property="Margin" Value="10 10 0 0"></Setter>
 	</Style>
 
+	<Style Selector="TextBlock.InfoSearch">
+		<Setter Property="FontSize" Value="20"></Setter>
+		<Setter Property="FontStyle" Value="Italic"></Setter>
+		<Setter Property="Foreground" Value="#e31e24"></Setter>
+		<Setter Property="Margin" Value="10 10 0 10"></Setter>
+		<Setter Property="HorizontalAlignment" Value="Center"></Setter>
+		<Setter Property="VerticalAlignment" Value="Center"></Setter>
+	</Style>
+
 	<Style Selector="ComboBox.CBField">
 		<Setter Property="FontSize" Value="12"></Setter>
 		<Setter Property="FontWeight" Value="DemiBold"></Setter>
 		<Setter Property="BorderBrush" Value="#445c93"></Setter>
 		<Setter Property="BorderThickness" Value="3"></Setter>
 		<Setter Property="CornerRadius" Value="3"></Setter>
-		<Setter Property="Height" Value="30"></Setter>
-		<Setter Property="Width" Value="300"></Setter>
+		<Setter Property="MaxHeight" Value="50"></Setter>
+		<Setter Property="MinWidth" Value="300"></Setter>
 		<Setter Property="Margin" Value="10 10 0 0"></Setter>
 	</Style>
 
-	<Style Selector="DatePicker.DPField">
-		<Setter Property="FontWeight" Value="DemiBold"></Setter>
-		<Setter Property="BorderBrush" Value="#5f2568"></Setter>
-		<Setter Property="BorderThickness" Value="3"></Setter>
-		<Setter Property="CornerRadius" Value="3"></Setter>
-		<Setter Property="Height" Value="45"></Setter>
+	<Style Selector="CheckBox.Check">
+		<Setter Property="Margin" Value="10 0 0 0"></Setter>
 	</Style>
-
+	
 	<Style Selector="Button.BTAdd">
 		<Setter Property="Foreground" Value="White"></Setter>
 		<Setter Property="Background" Value="#b37eb5"></Setter>

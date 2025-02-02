@@ -12,25 +12,28 @@
 		<conv:ImageConvert x:Key="ImageConvert"></conv:ImageConvert>
 	</UserControl.Resources>
 	
-	<Grid RowDefinitions="3*,8*">
+	<Grid RowDefinitions="2.5*,8*,1*">
 		<StackPanel Grid.Row="0">
+		<StackPanel HorizontalAlignment="Center">
 			<StackPanel Orientation="Horizontal">
-				<TextBlock Classes="Head" Text="Введите текст для поиска:"></TextBlock>
-				<TextBox Classes="TBField" Text="{Binding Search}"></TextBox>
-			</StackPanel>
-			<StackPanel Orientation="Horizontal">
-				<TextBlock Classes="Head" Text="Выберите тип:"></TextBlock>
-				<ComboBox Classes="CBField" SelectedItem="{Binding SelectType}" ItemsSource="{Binding TypesList}">
-					<ComboBox.ItemTemplate>
-						<DataTemplate>
-							<TextBlock Classes="Head" Text="{Binding Type1}"></TextBlock>
-						</DataTemplate>
-					</ComboBox.ItemTemplate>
-					
-				</ComboBox>
-			</StackPanel>
-			<TextBlock Classes="Head" Text="Список туров"></TextBlock>
+			<TextBlock Classes="Head" Text="Введите текст для поиска:"></TextBlock>
+			<TextBox Classes="TBField" Text="{Binding Search}"></TextBox>
 		</StackPanel>
+			<StackPanel Orientation="Horizontal">
+			<TextBlock Classes="Head" Text="Выберите тип:"></TextBlock>
+			<ComboBox Classes="CBField" SelectedItem="{Binding SelectType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding TypesList}">					
+				<ComboBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Classes="TBField" Text="{Binding Type1}"></TextBlock>
+					</DataTemplate>
+				</ComboBox.ItemTemplate>					
+			</ComboBox>			
+		</StackPanel>
+			<CheckBox Classes="Check" IsChecked="{Binding CheckActual}">Только актуальные туры</CheckBox>
+		</StackPanel>
+		<TextBlock Classes="Head" Text="Список туров"></TextBlock>
+		<TextBlock Classes="InfoSearch" Text="Результаты не найдены" IsVisible="{Binding NoResults}"/>
+	</StackPanel>
 		<ScrollViewer Grid.Row="1">
 			<Grid>
 			<ListBox ItemsSource="{Binding ToursList}" Background="Transparent">
@@ -59,5 +62,15 @@
 			</ListBox>
 			</Grid>				
 		</ScrollViewer>
+	<StackPanel Grid.Row="2">
+		<TextBlock Classes="Head">
+			<TextBlock.Text>
+				<MultiBinding StringFormat="{} {0} из {1}">
+					<Binding Path="FilteredToursCount"/>
+					<Binding Path="TotalToursCount"/>
+				</MultiBinding>
+			</TextBlock.Text>
+		</TextBlock>
+	</StackPanel>
 	</Grid>
 </UserControl>
