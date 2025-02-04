@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace client.ViewModels
 {
@@ -17,33 +19,38 @@ namespace client.ViewModels
         private readonly HttpClient _httpClient;
         public ReactiveCommand<Unit, Unit> LoadDataCommand { get; }
 
-        List<Hotel> _hotels;
-        public List<Hotel> HotelsList { get => _hotels; set => this.RaiseAndSetIfChanged(ref _hotels, value); }
+        private List<Hotel> _hotels = new();
+        public List<Hotel> HotelsList
+        {
+            get => _hotels;
+            set => this.RaiseAndSetIfChanged(ref _hotels, value);
+        }
 
         public HotelsPageVM(HttpClient httpClient)
         {
             _httpClient = httpClient;
             LoadDataCommand = ReactiveCommand.CreateFromTask(LoadDataAsync);
+
             LoadDataCommand.Execute().Subscribe();
         }
 
         private async Task LoadDataAsync()
         {
-            await getHotelsList(_httpClient);
+            await GetHotelsList();
         }
 
-        async Task getHotelsList(HttpClient client)
+        private async Task GetHotelsList()
         {
             try
             {
-                HttpResponseMessage message = await client.GetAsync("/HotelsList");
-                message.EnsureSuccessStatusCode(); 
+                HttpResponseMessage message = await _httpClient.GetAsync("/HotelsList");
+                message.EnsureSuccessStatusCode();
 
                 string buf = await message.Content.ReadAsStringAsync();
 
                 if (string.IsNullOrWhiteSpace(buf))
                 {
-                    Console.WriteLine("Ответ от сервера пустой.");
+                    Debug.WriteLine("Ответ от сервера пустой.");
                     return;
                 }
 
@@ -51,8 +58,8 @@ namespace client.ViewModels
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ошибка при получении списка туров: {ex.Message}");
+                Debug.WriteLine($"Ошибка при получении списка отелей: {ex.Message}");
             }
-        }
+        }        
     }
 }

@@ -8,28 +8,50 @@
 			 x:DataType="vm:HotelsPageVM">
 
 	<Grid>
-		<ScrollViewer HorizontalAlignment="Center">
-			<Grid>
-				<ListBox ItemsSource="{Binding HotelsList}" Background="Transparent">
-					<ListBox.ItemsPanel>
-						<ItemsPanelTemplate>
-							<WrapPanel></WrapPanel>
-						</ItemsPanelTemplate>
-					</ListBox.ItemsPanel>
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-							<Border Classes="tours">
-								<StackPanel>
-									<TextBlock Classes="List1" Text="{Binding Name}"></TextBlock>
-									<TextBlock Classes="List1" Text="{Binding CountOfStars}"></TextBlock>
-									<TextBlock Classes="List1" Text="{Binding CountryCodeNavigation.Country1}"></TextBlock>
-								</StackPanel>
-							</Border>
-						</DataTemplate>
-					</ListBox.ItemTemplate>
-				</ListBox>
-			</Grid>
-		</ScrollViewer>
-	</Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
 
+		<TextBlock Grid.Row="0" Text="Список отелей" FontSize="16" FontWeight="Bold" Margin="10"/>
+
+		<!-- Список отелей -->
+		<ListBox Grid.Row="1" ItemsSource="{Binding HotelsList}" BorderThickness="1" Padding="5">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<Grid Margin="5">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="100"/>
+							<ColumnDefinition Width="200"/>
+							<ColumnDefinition Width="100"/>
+						</Grid.ColumnDefinitions>
+
+						<TextBlock Text="{Binding Name}" Grid.Column="0"/>
+						<TextBlock Text="{Binding CountOfStars}" Grid.Column="1"/>
+						<TextBlock Text="{Binding CountryCodeNavigation.Country1}" Grid.Column="2"/>
+						<Button Content="Редактировать"
+								Grid.Column="3"
+								Command=""
+								CommandParameter=""/>
+					</Grid>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+
+		<!-- Пагинация -->
+		<StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+			<Button Content="⏪" Command="{Binding }" IsEnabled="{Binding }"/>
+			<Button Content="◀" Command="{Binding }" IsEnabled="{Binding }"/>
+
+			<TextBlock Text="{Binding }" Margin="10"/>
+
+			<Button Content="▶" Command="{Binding }" IsEnabled="{Binding }"/>
+			<Button Content="⏩" Command="{Binding }" IsEnabled="{Binding }"/>
+
+			<TextBlock Text=" Отелей на странице: " VerticalAlignment="Center"/>
+			<ComboBox ItemsSource="{Binding }" SelectedItem="{Binding }" Width="50"/>
+		</StackPanel>
+	</Grid>
 </UserControl>
