@@ -32,7 +32,7 @@ namespace client.ViewModels
         Models.Type _selectType = null;
         public Models.Type SelectType
         {
-            get => _selectType ?? _types.FirstOrDefault(); // Безопасный доступ
+            get => _selectType ?? _types.FirstOrDefault();
             set { this.RaiseAndSetIfChanged(ref _selectType, value); filters(); }
         }
 
@@ -107,6 +107,9 @@ namespace client.ViewModels
         bool _checkActual = false;
         public bool CheckActual { get => _checkActual; set { _checkActual = value; filters(); } }
 
+        int _selectedSort = 0;
+        public int SelectedSort { get => _selectedSort; set { _selectedSort = value; filters(); } }
+
         private int _totalToursCount;
         public int TotalToursCount
         {
@@ -127,15 +130,42 @@ namespace client.ViewModels
             get => _noResults;
             set => this.RaiseAndSetIfChanged(ref _noResults, value);
         }
+        
+        private double _allPrice;
+        public double AllPrice { get => _allPrice; set => this.RaiseAndSetIfChanged(ref _allPrice, value); }
+
+        public double allPrice(List<Tour> ToursList)
+        {
+            double sum = 0;
+            for (int i = 0; i < ToursList.Count; i++)
+            {
+                sum += ToursList[i].Price * ToursList[i].TicketCount;
+            }
+            sum = Math.Round(sum,2);
+            return sum;
+        }
 
         public void filters()
         {
-            ToursList = new List<Tour>(_alltours);
+            ToursList = new List<Tour>(_alltours);            
 
             if (!string.IsNullOrEmpty(_search)) 
             {                
                 ToursList = ToursList.Where(x => x.Name.ToLower().Contains(_search.ToLower()) ||
                 x.Description.ToLower().Contains(_search.ToLower())).ToList();
+            }
+
+            switch (_selectedSort)
+            {
+                case 0:
+                    ToursList = ToursList.ToList();
+                    break;
+                case 1:
+                    ToursList = ToursList.OrderBy(x => x.Price).ToList();
+                    break;
+                case 2:
+                    ToursList = ToursList.OrderByDescending(x => x.Price).ToList();
+                    break;
             }
 
             if (SelectType != null && SelectType.Id != 0)
@@ -147,6 +177,8 @@ namespace client.ViewModels
             {
                 ToursList = ToursList.Where(x => x.IsActual == 1).ToList();
             }
+
+            AllPrice = allPrice(ToursList);
 
             FilteredToursCount = ToursList.Count;
             NoResults = FilteredToursCount == 0;

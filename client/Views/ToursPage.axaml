@@ -18,8 +18,9 @@
 			<StackPanel Orientation="Horizontal">
 			<TextBlock Classes="Head" Text="Введите текст для поиска:"></TextBlock>
 			<TextBox Classes="TBField" Text="{Binding Search}"></TextBox>
+			<TextBlock Classes="Head" Text="{Binding AllPrice, StringFormat='{}Общая стоимость всех туров: {0:N0} РУБ'}"></TextBlock>
 		</StackPanel>
-			<StackPanel Orientation="Horizontal">
+		<StackPanel Orientation="Horizontal">
 			<TextBlock Classes="Head" Text="Выберите тип:"></TextBlock>
 			<ComboBox Classes="CBField" SelectedItem="{Binding SelectType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding TypesList}">					
 				<ComboBox.ItemTemplate>
@@ -29,6 +30,13 @@
 				</ComboBox.ItemTemplate>					
 			</ComboBox>			
 		</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<ComboBox SelectedIndex="{Binding SelectedSort}" Classes="CBField">
+					<ComboBoxItem>Без сортировки</ComboBoxItem>
+					<ComboBoxItem>По возрастанию стоимости</ComboBoxItem>
+					<ComboBoxItem>По убыванию стоимости</ComboBoxItem>
+				</ComboBox>
+			</StackPanel>
 			<CheckBox Classes="Check" IsChecked="{Binding CheckActual}">Только актуальные туры</CheckBox>
 		</StackPanel>
 		<TextBlock Classes="Head" Text="Список туров"></TextBlock>
