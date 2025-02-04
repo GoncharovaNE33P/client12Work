@@ -30,4 +30,10 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.10" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\HotelsPage.axaml.cs">
+      <DependentUpon>HotelsPage.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

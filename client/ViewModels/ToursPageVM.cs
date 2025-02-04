@@ -10,6 +10,7 @@ using ReactiveUI;
 using Newtonsoft.Json;
 using System.Reactive.Subjects;
 using System.Reactive;
+using client.Views;
 
 namespace client.ViewModels
 {
@@ -17,6 +18,11 @@ namespace client.ViewModels
     {
         private readonly HttpClient _httpClient;
         public ReactiveCommand<Unit, Unit> LoadDataCommand { get; }
+
+        public void ToHotelsPage()
+        {
+            MainWindowViewModel.Instance.PageContent = new HotelsPage();
+        }
 
         List<Tour> _alltours = new();
 
@@ -178,7 +184,8 @@ namespace client.ViewModels
                 ToursList = ToursList.Where(x => x.IsActual == 1).ToList();
             }
 
-            AllPrice = allPrice(ToursList);
+            AllPrice
+                = allPrice(ToursList);
 
             FilteredToursCount = ToursList.Count;
             NoResults = FilteredToursCount == 0;

@@ -12,37 +12,44 @@
 		<conv:ImageConvert x:Key="ImageConvert"></conv:ImageConvert>
 	</UserControl.Resources>
 	
-	<Grid RowDefinitions="2.5*,8*,1*">
-		<StackPanel Grid.Row="0">
-		<StackPanel HorizontalAlignment="Center">
+	<!--<Grid RowDefinitions="Auto,8*,1*">-->
+	<Grid RowDefinitions="Auto,*,Auto" ColumnDefinitions="*,Auto">
+		<StackPanel Grid.Row="0" Grid.Column="0">
 			<StackPanel Orientation="Horizontal">
-			<TextBlock Classes="Head" Text="Введите текст для поиска:"></TextBlock>
-			<TextBox Classes="TBField" Text="{Binding Search}"></TextBox>
-			<TextBlock Classes="Head" Text="{Binding AllPrice, StringFormat='{}Общая стоимость всех туров: {0:N0} РУБ'}"></TextBlock>
-		</StackPanel>
-		<StackPanel Orientation="Horizontal">
-			<TextBlock Classes="Head" Text="Выберите тип:"></TextBlock>
-			<ComboBox Classes="CBField" SelectedItem="{Binding SelectType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding TypesList}">					
-				<ComboBox.ItemTemplate>
-					<DataTemplate>
-						<TextBlock Classes="TBField" Text="{Binding Type1}"></TextBlock>
-					</DataTemplate>
-				</ComboBox.ItemTemplate>					
-			</ComboBox>			
-		</StackPanel>
+				<TextBlock Classes="Head" Text="Введите текст для поиска:"></TextBlock>
+				<TextBox Classes="TBField" Text="{Binding Search}"></TextBox>
+			</StackPanel>
+
 			<StackPanel Orientation="Horizontal">
-				<ComboBox SelectedIndex="{Binding SelectedSort}" Classes="CBField">
+				<TextBlock Classes="Head" Text="Выберите тип тура:"></TextBlock>
+				<ComboBox Classes="CBField" Margin="80 10 0 0" SelectedItem="{Binding SelectType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding TypesList}">
+					<ComboBox.ItemTemplate>
+						<DataTemplate>
+							<TextBlock Classes="TBField" Text="{Binding Type1}"></TextBlock>
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
+				</ComboBox>
+			</StackPanel>
+
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Classes="Head" Text="Выберите сортировку:"></TextBlock>
+				<ComboBox SelectedIndex="{Binding SelectedSort}" Margin="58 10 0 0" Classes="CBField">
 					<ComboBoxItem>Без сортировки</ComboBoxItem>
 					<ComboBoxItem>По возрастанию стоимости</ComboBoxItem>
 					<ComboBoxItem>По убыванию стоимости</ComboBoxItem>
 				</ComboBox>
 			</StackPanel>
+
 			<CheckBox Classes="Check" IsChecked="{Binding CheckActual}">Только актуальные туры</CheckBox>
+			<Button Classes="BTAdd" Command="" Content="Список отелей"></Button>			
+			
+			<TextBlock Classes="Head" Margin="10 10 0 20" Text="Список туров"></TextBlock>
+			<TextBlock Classes="InfoSearch" Text="Результаты не найдены" IsVisible="{Binding NoResults}"/>
 		</StackPanel>
-		<TextBlock Classes="Head" Text="Список туров"></TextBlock>
-		<TextBlock Classes="InfoSearch" Text="Результаты не найдены" IsVisible="{Binding NoResults}"/>
-	</StackPanel>
-		<ScrollViewer Grid.Row="1">
+
+		<TextBlock Grid.Row="0" Grid.Column="1" Classes="AllPrice" Text="{Binding AllPrice, StringFormat='{}Общая стоимость всех туров: {0:N0} РУБ'}"></TextBlock>
+		
+	<ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">
 			<Grid>
 			<ListBox ItemsSource="{Binding ToursList}" Background="Transparent">
 				<ListBox.ItemsPanel>
@@ -70,8 +77,8 @@
 			</ListBox>
 			</Grid>				
 		</ScrollViewer>
-	<StackPanel Grid.Row="2">
-		<TextBlock Classes="Head">
+	<StackPanel Grid.Row="2" Grid.Column="0">
+		<TextBlock Classes="Head" Margin="10 10 0 20">
 			<TextBlock.Text>
 				<MultiBinding StringFormat="{} {0} из {1}">
 					<Binding Path="FilteredToursCount"/>
