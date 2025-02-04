@@ -67,7 +67,7 @@ namespace client.ViewModels
             try
             {
                 HttpResponseMessage message = await client.GetAsync("/ToursList");
-                message.EnsureSuccessStatusCode(); // Проверяем успешный статус ответа (200-299)
+                message.EnsureSuccessStatusCode(); 
 
                 string buf = await message.Content.ReadAsStringAsync();
 
@@ -91,7 +91,7 @@ namespace client.ViewModels
             try
             {
                 HttpResponseMessage message = await client.GetAsync("/TypesList");
-                message.EnsureSuccessStatusCode(); // Проверяем успешный статус ответа (200-299)
+                message.EnsureSuccessStatusCode();
 
                 string buf = await message.Content.ReadAsStringAsync();
 

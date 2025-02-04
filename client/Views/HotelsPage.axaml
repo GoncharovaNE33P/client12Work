@@ -6,5 +6,30 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="client.HotelsPage"
 			 x:DataType="vm:HotelsPageVM">
-  Welcome to Avalonia!
+
+	<Grid>
+		<ScrollViewer HorizontalAlignment="Center">
+			<Grid>
+				<ListBox ItemsSource="{Binding HotelsList}" Background="Transparent">
+					<ListBox.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel></WrapPanel>
+						</ItemsPanelTemplate>
+					</ListBox.ItemsPanel>
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<Border Classes="tours">
+								<StackPanel>
+									<TextBlock Classes="List1" Text="{Binding Name}"></TextBlock>
+									<TextBlock Classes="List1" Text="{Binding CountOfStars}"></TextBlock>
+									<TextBlock Classes="List1" Text="{Binding CountryCodeNavigation.Country1}"></TextBlock>
+								</StackPanel>
+							</Border>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</Grid>
+		</ScrollViewer>
+	</Grid>
+
 </UserControl>

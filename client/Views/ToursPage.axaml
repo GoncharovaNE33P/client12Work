@@ -41,7 +41,7 @@
 			</StackPanel>
 
 			<CheckBox Classes="Check" IsChecked="{Binding CheckActual}">Только актуальные туры</CheckBox>
-			<Button Classes="BTAdd" Command="" Content="Список отелей"></Button>			
+			<Button Classes="BTAdd" Command="{Binding ToHotelsPage}" Content="Список отелей"></Button>			
 			
 			<TextBlock Classes="Head" Margin="10 10 0 20" Text="Список туров"></TextBlock>
 			<TextBlock Classes="InfoSearch" Text="Результаты не найдены" IsVisible="{Binding NoResults}"/>
