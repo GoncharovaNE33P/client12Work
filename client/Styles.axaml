@@ -113,10 +113,27 @@
 		<Setter Property="CornerRadius" Value="3"></Setter>
 	</Style>
 
+	<Style Selector="Button.BTEdit">
+		<Setter Property="Foreground" Value="#e31e24"></Setter>
+		<Setter Property="Background" Value="#fac716"></Setter>
+		<Setter Property="FontSize" Value="15"></Setter>
+		<Setter Property="FontWeight" Value="DemiBold"></Setter>
+		<Setter Property="Margin" Value="10 10 0 0"></Setter>
+		<Setter Property="BorderBrush" Value="#e31e24"></Setter>
+		<Setter Property="BorderThickness" Value="3"></Setter>
+		<Setter Property="CornerRadius" Value="3"></Setter>
+	</Style>
+
 	<Style Selector="Button.BTAdd:pointerover /template/ ContentPresenter">
 		<Setter Property="Background" Value="#445c93"></Setter>
 		<Setter Property="Foreground" Value="#bae3e8"></Setter>
 		<Setter Property="BorderBrush" Value="#bae3e8"></Setter>
+	</Style>
+
+	<Style Selector="Button.BTEdit:pointerover /template/ ContentPresenter">
+		<Setter Property="Background" Value="#e31e24"></Setter>
+		<Setter Property="Foreground" Value="#fac716"></Setter>
+		<Setter Property="BorderBrush" Value="#fac716"></Setter>
 	</Style>
 
 	<Style Selector="Button.BTDel">
