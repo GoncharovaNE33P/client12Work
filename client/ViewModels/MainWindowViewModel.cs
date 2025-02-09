@@ -12,7 +12,7 @@ namespace client.ViewModels
             Instance = this;
         }
 
-        UserControl pageContent = new HotelsPage();
+        UserControl pageContent = new ToursPage();
 
         public UserControl PageContent { get => pageContent; set => this.RaiseAndSetIfChanged(ref pageContent, value); }
     }
