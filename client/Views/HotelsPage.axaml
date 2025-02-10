@@ -15,13 +15,13 @@
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 		
-		<Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="0 10 90 20">
+		<Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="0 5 90 20">
 			<Button Content="Добавить отель" Classes="BTEdit" Command="{Binding ToEditCreateHotelPage}" Width="141"/>
 		</Grid>
-		<Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="0 10 10 20">
+		<Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="0 5 10 20">
 			<Button Content="Назад" Classes="BTEdit" Command="{Binding ToToursPage}" Width="70"/>
 		</Grid>
-		<TextBlock Grid.Row="0" Grid.Column="0" Margin="10 10 0 20" Classes="Head" Text="Список отелей"/>		
+		<TextBlock Grid.Row="0" Grid.Column="0" Margin="10 15 0 20" Classes="Head" Text="Список отелей"/>		
 
 		<Grid Grid.Row="1" Margin="5">
 			<Grid.ColumnDefinitions>
@@ -36,6 +36,11 @@
 			<TextBlock HorizontalAlignment="Center" Classes="List2" Text="Страна" Grid.Column="2"/>
 			<TextBlock HorizontalAlignment="Center" Classes="List2" Text="Действия" Grid.Column="3"/>
 		</Grid>
+		
+		<StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+			<TextBlock Classes="List2" Text="Отелей на странице:" VerticalAlignment="Center" Margin="0 0 0 10"/>
+			<ComboBox Classes="CBFieldH" ItemsSource="{Binding PageSizes}" SelectedItem="{Binding ItemsPage}" Margin="10 15 0 20"/>
+		</StackPanel>
 
 		<!-- Список отелей -->
 		<ListBox Grid.Row="2" ItemsSource="{Binding HotelsList}" BorderThickness="3" BorderBrush="#fac716" Padding="5" Background="Transparent">
@@ -52,11 +57,11 @@
 						<TextBlock HorizontalAlignment="Center" Margin = "0 25 0 0" Classes="List1" Text="{Binding Name}" Grid.Column="0"/>
 						<TextBlock HorizontalAlignment="Center" Margin = "0 25 0 0" Classes="List2" Text="{Binding CountOfStars, StringFormat=''}" Grid.Column="1"/>
 						<TextBlock HorizontalAlignment="Center" Margin = "0 25 0 0" Classes="List2" Text="{Binding CountryCodeNavigation.Country1}" Grid.Column="2"/>
-						<Button HorizontalAlignment="Center" Classes="BTEdit" Content="Редактировать"
+						<Button HorizontalAlignment="Center" Classes="BTEdit" Content="Редактировать" Margin="0 10 70 0"
 								Grid.Column="3"
 								Command="{Binding $parent[UserControl].((vm:HotelsPageVM)DataContext).ToEditCreateHotelPage}"
 								CommandParameter="{Binding Id}"/>
-						<Button HorizontalAlignment="Center" Classes="BTEdit" Content="Удалить"
+						<Button HorizontalAlignment="Center" Classes="BTEdit" Content="Удалить" Margin="200 10 0 0"
 								Grid.Column="3"
 								Command="{Binding $parent[UserControl].((vm:HotelsPageVM)DataContext).ToEditCreateHotelPage}"
 								CommandParameter="{Binding Id}"/>
@@ -65,18 +70,25 @@
 			</ListBox.ItemTemplate>
 		</ListBox>
 
-		<!-- Пагинация -->
-		<StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-			<Button Background="Transparent" Content="⏪" Command="{Binding FirstPageCommand}" IsEnabled="{Binding CanGoFirst}"/>
-			<Button Background="Transparent" Content="◀" Command="{Binding PreviousPageCommand}" IsEnabled="{Binding CanGoPrevious}"/>
+		<Grid Grid.Row="3" Margin="10">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
 
-			<TextBlock Text="{Binding CurrentPageText}" Margin="10"/>
+			<StackPanel Orientation="Horizontal" Grid.Column="0">
+				<Button Classes="BTEdit" Content="◀◀ Первая" Command="{Binding FirstPageCommand}" IsEnabled="{Binding CurrentPage}"/>
+				<Button Classes="BTEdit" Content="◀ Предыдущая" Command="{Binding PrevPageCommand}" IsEnabled="{Binding CurrentPage}"/>
+			</StackPanel>
 
-			<Button Background="Transparent" Content="▶" Command="{Binding NextPageCommand}" IsEnabled="{Binding CanGoNext}"/>
-			<Button Background="Transparent" Content="⏩" Command="{Binding LastPageCommand}" IsEnabled="{Binding CanGoLast}"/>
+			<TextBlock Classes="List2" FontSize="20" Margin="0 10 0 0" Grid.Column="1" Text="{Binding PageInfo}" HorizontalAlignment="Center"/>
 
-			<TextBlock Text=" Отелей на странице: " VerticalAlignment="Center"/>
-			<ComboBox ItemsSource="{Binding PageSizes}" SelectedItem="{Binding ItemsPerPage}" Width="70"/>
-		</StackPanel>
+			<StackPanel Orientation="Horizontal" Grid.Column="2">
+				<Button Classes="BTEdit" Content="Следующая ▶" Command="{Binding NextPageCommand}" IsEnabled="{Binding CurrentPage}"/>
+				<Button Classes="BTEdit" Content="Последняя ▶▶" Command="{Binding LastPageCommand}" IsEnabled="{Binding CurrentPage}"/>
+			</StackPanel>
+		</Grid>
+		
 	</Grid>
 </UserControl>

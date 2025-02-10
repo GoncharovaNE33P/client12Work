@@ -14,7 +14,7 @@
 	
 	<!--<Grid RowDefinitions="Auto,8*,1*">-->
 	<Grid RowDefinitions="Auto,*,Auto" ColumnDefinitions="*,Auto">
-		<StackPanel Grid.Row="0" Grid.Column="0">
+		<StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
 			<StackPanel Orientation="Horizontal">
 				<TextBlock Classes="Head" Text="Введите текст для поиска:"></TextBlock>
 				<TextBox Classes="TBField" Text="{Binding Search}"></TextBox>
@@ -44,7 +44,7 @@
 			<Button Classes="BTAdd" Command="{Binding ToHotelsPage}" Content="Список отелей"></Button>			
 			
 			<TextBlock Classes="Head" Margin="10 10 0 20" Text="Список туров"></TextBlock>
-			<TextBlock Classes="InfoSearch" Text="Результаты не найдены" IsVisible="{Binding NoResults}"/>
+			<TextBlock Classes="InfoSearch" Text="Результаты не найдены" IsVisible="{Binding NoResults}" />
 		</StackPanel>
 
 		<TextBlock Grid.Row="0" Grid.Column="1" Classes="AllPrice" Text="{Binding AllPrice, StringFormat='{}Общая стоимость всех туров: {0:N0} РУБ'}"></TextBlock>

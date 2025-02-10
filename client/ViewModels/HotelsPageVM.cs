@@ -21,46 +21,61 @@ namespace client.ViewModels
         public ReactiveCommand<Unit, Unit> LoadDataCommand { get; }       
 
         private List<Hotel> _hotels = new();
+
+        private List<Hotel> _pagehotels = new();
         public List<Hotel> HotelsList
         {
-            get => _hotels;
-            set => this.RaiseAndSetIfChanged(ref _hotels, value);
-        }
+            get => _pagehotels;
+            set => this.RaiseAndSetIfChanged(ref _pagehotels, value);
+        }      
 
-        private ObservableCollection<Hotel> _pagedHotels = new();
+        public List<int> PageSizes { get; } = new() { 5, 10, 20, 50 };
+
+        private int _itemsPage = 10;
         private int _currentPage = 1;
-        private int _itemsPerPage = 10;
+        private int _totalHotels;
+        private int _totalPages;
+        public string CurrentPageText => $"Страница {_currentPage} из {TotalPages}";
 
-        public ObservableCollection<Hotel> PagedHotels
+        public int CurrentPage
         {
-            get => _pagedHotels;
-            set => this.RaiseAndSetIfChanged(ref _pagedHotels, value);
-        }
-
-        public ObservableCollection<int> PageSizes { get; } = new() { 5, 10, 20, 50 };
-
-        public int ItemsPerPage
-        {
-            get => _itemsPerPage;
+            get => _currentPage;
             set
             {
-                this.RaiseAndSetIfChanged(ref _itemsPerPage, value);
-                _currentPage = 1;
+                if (value < 1) value = 1;
+                if (value > TotalPages) value = TotalPages;
+                this.RaiseAndSetIfChanged(ref _currentPage, value);
                 UpdatePagedHotels();
+                this.RaisePropertyChanged(nameof(PageInfo));
             }
         }
 
-        public string CurrentPageText => $"Страница {_currentPage} из {TotalPages}";
+        public string PageInfo => $"Страница {_currentPage} из {TotalPages}";
+        public int TotalHotels
+        {
+            get => _totalHotels;
+            private set => this.RaiseAndSetIfChanged(ref _totalHotels, value);
+        }
 
-        public bool CanGoFirst => _currentPage > 1;
-        public bool CanGoPrevious => _currentPage > 1;
-        public bool CanGoNext => _currentPage < TotalPages;
-        public bool CanGoLast => _currentPage < TotalPages;
+        public int TotalPages
+        {
+            get => _totalPages;
+            private set => this.RaiseAndSetIfChanged(ref _totalPages, value);
+        }
 
-        private int TotalPages => (int)Math.Ceiling((double)_hotels.Count / _itemsPerPage);
+        public int ItemsPage
+        {
+            get => _itemsPage;
+            set
+            {
+                if (value < 1) value = 1;
+                this.RaiseAndSetIfChanged(ref _itemsPage, value);
+                UpdatePagination();
+            }
+        }
 
         public ICommand FirstPageCommand { get; }
-        public ICommand PreviousPageCommand { get; }
+        public ICommand PrevPageCommand { get; }
         public ICommand NextPageCommand { get; }
         public ICommand LastPageCommand { get; }
 
@@ -82,31 +97,22 @@ namespace client.ViewModels
         public HotelsPageVM(HttpClient httpClient)
         {
             _httpClient = httpClient;
-
-            FirstPageCommand = ReactiveCommand.Create(() => { _currentPage = 1; UpdatePagedHotels(); });
-            PreviousPageCommand = ReactiveCommand.Create(() => { if (_currentPage > 1) _currentPage--; UpdatePagedHotels(); });
-            NextPageCommand = ReactiveCommand.Create(() => { if (_currentPage < TotalPages) _currentPage++; UpdatePagedHotels(); });
-            LastPageCommand = ReactiveCommand.Create(() => { _currentPage = TotalPages; UpdatePagedHotels(); });
-
+            
             LoadDataCommand = ReactiveCommand.CreateFromTask(LoadDataAsync);
             LoadDataCommand.Execute().Subscribe();
-        }
 
-        private void UpdatePagedHotels()
-        {
-            var pagedData = _hotels.Skip((_currentPage - 1) * _itemsPerPage).Take(_itemsPerPage).ToList();
-            PagedHotels = new ObservableCollection<Hotel>(pagedData);
+            UpdatePagination();
 
-            this.RaisePropertyChanged(nameof(CurrentPageText));
-            this.RaisePropertyChanged(nameof(CanGoFirst));
-            this.RaisePropertyChanged(nameof(CanGoPrevious));
-            this.RaisePropertyChanged(nameof(CanGoNext));
-            this.RaisePropertyChanged(nameof(CanGoLast));
+            NextPageCommand = ReactiveCommand.Create(() => CurrentPage++);
+            PrevPageCommand = ReactiveCommand.Create(() => CurrentPage--);
+            FirstPageCommand = ReactiveCommand.Create(() => CurrentPage = 1);
+            LastPageCommand = ReactiveCommand.Create(() => CurrentPage = TotalPages);
         }
 
         private async Task LoadDataAsync()
         {
             await GetHotelsList();
+            UpdatePagination();
         }
 
         private async Task GetHotelsList()
@@ -124,13 +130,33 @@ namespace client.ViewModels
                     return;
                 }
 
-                HotelsList = JsonConvert.DeserializeObject<List<Hotel>>(buf);
-                UpdatePagedHotels();
+                _hotels = JsonConvert.DeserializeObject<List<Hotel>>(buf);                
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Ошибка при получении списка отелей: {ex.Message}");
             }
-        }        
+        }
+
+        private void UpdatePagination()
+        {
+            TotalHotels = _hotels.Count;
+            TotalPages = (int)Math.Ceiling((double)TotalHotels / ItemsPage);
+            CurrentPage = 1; // Переключаем на первую страницу при изменении количества элементов
+            UpdatePagedHotels();
+        }
+
+        private void UpdatePagedHotels()
+        {
+            if (TotalHotels == 0)
+            {
+                HotelsList = new List<Hotel>();
+                return;
+            }
+
+            HotelsList = new List<Hotel>(
+                _hotels.Skip((CurrentPage - 1) * ItemsPage).Take(ItemsPage)
+            );
+        }
     }
 }
