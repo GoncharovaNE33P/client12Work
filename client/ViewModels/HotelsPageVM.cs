@@ -12,13 +12,15 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows.Input;
+using MsBox.Avalonia.Enums;
+using MsBox.Avalonia;
 
 namespace client.ViewModels
 {
     internal class HotelsPageVM : ViewModelBase
     {
         private readonly HttpClient _httpClient;
-        public ReactiveCommand<Unit, Unit> LoadDataCommand { get; }       
+        public ICommand DeleteCommand { get; }
 
         private List<Hotel> _hotels = new();
 
@@ -51,6 +53,10 @@ namespace client.ViewModels
         }
 
         public string PageInfo => $"Страница {_currentPage} из {TotalPages}";
+
+        private string _countHotels;
+
+        public string CountHotels { get => _countHotels; set => this.RaiseAndSetIfChanged(ref _countHotels, value); }
         public int TotalHotels
         {
             get => _totalHotels;
@@ -78,18 +84,18 @@ namespace client.ViewModels
         public ICommand PrevPageCommand { get; }
         public ICommand NextPageCommand { get; }
         public ICommand LastPageCommand { get; }
-
+        
         public void ToToursPage()
         {
             MainWindowViewModel.Instance.PageContent = new ToursPage();
         }
 
-        public void ToEditCreateHotelPage()
+        public void ToCreateHotelPage()
         {
             MainWindowViewModel.Instance.PageContent = new EditCreateHotelPage();
         }
 
-        public void ToEditCreateHotelPage(int id)
+        public void ToEditHotelPage(int id)
         {
             MainWindowViewModel.Instance.PageContent = new EditCreateHotelPage(id);
         }
@@ -97,9 +103,8 @@ namespace client.ViewModels
         public HotelsPageVM(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            
-            LoadDataCommand = ReactiveCommand.CreateFromTask(LoadDataAsync);
-            LoadDataCommand.Execute().Subscribe();
+
+            LoadDataAsync();
 
             UpdatePagination();
 
@@ -107,6 +112,12 @@ namespace client.ViewModels
             PrevPageCommand = ReactiveCommand.Create(() => CurrentPage--);
             FirstPageCommand = ReactiveCommand.Create(() => CurrentPage = 1);
             LastPageCommand = ReactiveCommand.Create(() => CurrentPage = TotalPages);
+
+            DeleteCommand = ReactiveCommand.Create<int>(async id =>
+            {
+                await DeleteHotel(id);
+                await LoadDataAsync();
+            });
         }
 
         private async Task LoadDataAsync()
@@ -130,11 +141,34 @@ namespace client.ViewModels
                     return;
                 }
 
-                _hotels = JsonConvert.DeserializeObject<List<Hotel>>(buf);                
+                _hotels = JsonConvert.DeserializeObject<List<Hotel>>(buf);
+                CountHotels = $"Список отелей, количество записей: {_hotels.Count}";
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Ошибка при получении списка отелей: {ex.Message}");
+            }
+        }
+
+        async Task DeleteHotel(int id)
+        {
+            string Messege = $"Вы уверенны, что хотите удалить отель {HotelsList.FirstOrDefault(x => x.Id == id).Name}?";
+            ButtonResult result = await MessageBoxManager.GetMessageBoxStandard("Сообщение с уведомлением об удалении!", Messege, ButtonEnum.YesNo).ShowAsync();
+            switch (result)
+            {
+                case ButtonResult.Yes:
+                    {
+                        HttpResponseMessage deleteCat = await _httpClient.DeleteAsync($"/HotelDelete/{id}");
+                        Messege = "Отель удалён!";
+                        ButtonResult result2 = await MessageBoxManager.GetMessageBoxStandard("Сообщение с уведомлением об удалении!", Messege, ButtonEnum.Ok).ShowAsync();                        
+                        break;
+                    }
+                case ButtonResult.No:
+                    {
+                        Messege = "Удаление отменено!";
+                        ButtonResult result1 = await MessageBoxManager.GetMessageBoxStandard("Сообщение с уведомлением об удалении!", Messege, ButtonEnum.Ok).ShowAsync();
+                        break;
+                    }
             }
         }
 
@@ -146,11 +180,19 @@ namespace client.ViewModels
             UpdatePagedHotels();
         }
 
-        private void UpdatePagedHotels()
+        private bool _dataLoadErrorShown = false;
+
+        private async void UpdatePagedHotels()
         {
             if (TotalHotels == 0)
             {
                 HotelsList = new List<Hotel>();
+                if (!_dataLoadErrorShown)
+                {
+                    _dataLoadErrorShown = true; 
+                    string message = "Данные загружаются. Если данные не загрузились, повторно перейдите на эту страницу.";
+                    await MessageBoxManager.GetMessageBoxStandard("Уведомление о загрузке данных!", message, ButtonEnum.Ok).ShowAsync();
+                }
                 return;
             }
 

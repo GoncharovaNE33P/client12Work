@@ -16,12 +16,13 @@
 		</Grid.RowDefinitions>
 		
 		<Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="0 5 90 20">
-			<Button Content="Добавить отель" Classes="BTEdit" Command="{Binding ToEditCreateHotelPage}" Width="141"/>
+			<Button Content="Добавить отель" Classes="BTEdit" Command="{Binding ToCreateHotelPage}" Width="141"/>
 		</Grid>
 		<Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="0 5 10 20">
 			<Button Content="Назад" Classes="BTEdit" Command="{Binding ToToursPage}" Width="70"/>
 		</Grid>
-		<TextBlock Grid.Row="0" Grid.Column="0" Margin="10 15 0 20" Classes="Head" Text="Список отелей"/>		
+		
+		<TextBlock Grid.Row="0" Grid.Column="0" Margin="10 15 0 20" Classes="Head" Text="{Binding CountHotels}"/>			
 
 		<Grid Grid.Row="1" Margin="5">
 			<Grid.ColumnDefinitions>
@@ -59,11 +60,11 @@
 						<TextBlock HorizontalAlignment="Center" Margin = "0 25 0 0" Classes="List2" Text="{Binding CountryCodeNavigation.Country1}" Grid.Column="2"/>
 						<Button HorizontalAlignment="Center" Classes="BTEdit" Content="Редактировать" Margin="0 10 70 0"
 								Grid.Column="3"
-								Command="{Binding $parent[UserControl].((vm:HotelsPageVM)DataContext).ToEditCreateHotelPage}"
+								Command="{Binding $parent[UserControl].((vm:HotelsPageVM)DataContext).ToEditHotelPage}"
 								CommandParameter="{Binding Id}"/>
 						<Button HorizontalAlignment="Center" Classes="BTEdit" Content="Удалить" Margin="200 10 0 0"
 								Grid.Column="3"
-								Command="{Binding $parent[UserControl].((vm:HotelsPageVM)DataContext).ToEditCreateHotelPage}"
+								Command="{Binding $parent[UserControl].((vm:HotelsPageVM)DataContext).DeleteCommand}"
 								CommandParameter="{Binding Id}"/>
 					</Grid>
 				</DataTemplate>
