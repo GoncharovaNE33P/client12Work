@@ -5,13 +5,13 @@ namespace client.Models;
 
 public partial class ToursType
 {
-    public int Id { get; set; }
+    public int IdToursType { get; set; }
 
-    public int TourId { get; set; }
+    public int IdTour { get; set; }
 
-    public int TypeId { get; set; }
+    public int IdType { get; set; }
 
-    public virtual Tour Tour { get; set; } = null!;
+    public virtual Tour IdTourNavigation { get; set; } = null!;
 
-    public virtual Type Type { get; set; } = null!;
+    public virtual Type IdTypeNavigation { get; set; } = null!;
 }

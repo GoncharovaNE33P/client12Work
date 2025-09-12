@@ -5,9 +5,9 @@ namespace client.Models;
 
 public partial class Hotel
 {
-    public int Id { get; set; }
+    public int IdHotel { get; set; }
 
-    public string Name { get; set; } = null!;
+    public string NameHotel { get; set; } = null!;
 
     public int CountOfStars { get; set; }
 

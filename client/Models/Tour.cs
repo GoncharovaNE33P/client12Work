@@ -5,11 +5,11 @@ namespace client.Models;
 
 public partial class Tour
 {
-    public int Id { get; set; }
+    public int IdTour { get; set; }
 
     public int TicketCount { get; set; }
 
-    public string Name { get; set; } = null!;
+    public string NameTour { get; set; } = null!;
 
     public string? Description { get; set; }
 

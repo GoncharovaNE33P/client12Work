@@ -13,13 +13,13 @@
 				<Button Classes="BTEdit" Command="{Binding AddEditCommand}" Content="{Binding NameBT}"></Button>
 		</StackPanel>
 		<StackPanel Grid.Row="1" HorizontalAlignment="Center">
-			<TextBox Classes="TBFieldEdit" Watermark="Введите наименование отеля"  Text="{Binding NewHotel.Name}"></TextBox>
+			<TextBox Classes="TBFieldEdit" Watermark="Введите наименование отеля"  Text="{Binding NewHotel.NameHotel}"></TextBox>
 			<TextBox Classes="TBFieldEdit" Watermark="Введите количество звезд" Text="{Binding CountStars}"></TextBox>
 			<TextBox Classes="TBFieldEdit" Watermark="Введите описание отеля" Text="{Binding NewHotel.Description}" TextWrapping="Wrap" Height="100"></TextBox>
 			<ComboBox Classes="CBFieldEdit" ItemsSource="{Binding CountryList}" SelectedValue="{Binding SelectedCountry}">
 				<ComboBox.ItemTemplate>
 					<DataTemplate>
-						<TextBlock Text="{Binding Country1}"/>
+						<TextBlock Text="{Binding NameCountry}"/>
 					</DataTemplate>
 				</ComboBox.ItemTemplate>
 			</ComboBox>

@@ -102,7 +102,7 @@ namespace client.ViewModels
                 }
 
                 TypesList = JsonConvert.DeserializeObject<List<Models.Type>>(buf);
-                TypesList = new List<Models.Type> { new Models.Type { Id = 0, Type1 = "Все типы" } }.Concat(TypesList).ToList();
+                TypesList = new List<Models.Type> { new Models.Type { IdType = 0, NameType = "Все типы" } }.Concat(TypesList).ToList();
             }
             catch (Exception ex)
             {
@@ -157,7 +157,7 @@ namespace client.ViewModels
 
             if (!string.IsNullOrEmpty(_search)) 
             {                
-                ToursList = ToursList.Where(x => x.Name.ToLower().Contains(_search.ToLower()) ||
+                ToursList = ToursList.Where(x => x.NameTour.ToLower().Contains(_search.ToLower()) ||
                 x.Description.ToLower().Contains(_search.ToLower())).ToList();
             }
 
@@ -174,9 +174,9 @@ namespace client.ViewModels
                     break;
             }
 
-            if (SelectType != null && SelectType.Id != 0)
+            if (SelectType != null && SelectType.IdType != 0)
             {
-                ToursList = ToursList.Where(x => x.ToursTypes.Any(y => y.TypeId == SelectType.Id)).ToList();
+                ToursList = ToursList.Where(x => x.ToursTypes.Any(y => y.IdType == SelectType.IdType)).ToList();
             }
 
             if (_checkActual)

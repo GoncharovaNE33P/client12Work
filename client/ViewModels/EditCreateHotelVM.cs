@@ -91,7 +91,7 @@ namespace client.ViewModels
             HttpResponseMessage messageMusicartist = await _httpClient.GetAsync($"/OneHotel/{id}");
             NewHotel = JsonConvert.DeserializeObject<Hotel>(await messageMusicartist.Content.ReadAsStringAsync());
             CountStars = NewHotel.CountOfStars.ToString();
-            SelectedCountry = CountryList?.FirstOrDefault(p => p.Code == NewHotel.CountryCodeNavigation.Code);
+            SelectedCountry = CountryList?.FirstOrDefault(p => p.CountryCode == NewHotel.CountryCodeNavigation.CountryCode);
         }
 
         private async Task InitializeCountryListAsync()
@@ -108,14 +108,14 @@ namespace client.ViewModels
                 HttpResponseMessage message = await client.GetAsync("/CountryList");
                 string buf = await message.Content.ReadAsStringAsync();
                 var fetchedList = JsonConvert.DeserializeObject<List<Country>>(buf);
-                fetchedList.OrderBy(x => x.Code);
+                fetchedList.OrderBy(x => x.CountryCode);
                 var combinedList = new List<Country>
                 {
-                    new Country { Code = "", Country1 = "Выберите страну" }
+                    new Country { CountryCode = "", NameCountry = "Выберите страну" }
                 };
 
                 if (fetchedList != null)
-                    combinedList.AddRange(fetchedList.OrderBy(x => x.Code));
+                    combinedList.AddRange(fetchedList.OrderBy(x => x.CountryCode));
 
                 return combinedList;
             }
@@ -128,7 +128,7 @@ namespace client.ViewModels
 
                 return new List<Country>
                 {
-                    new Country { Code = "", Country1 = "Выберите страну" }
+                    new Country { CountryCode = "", NameCountry = "Выберите страну" }
                 };
             }
         }
@@ -137,7 +137,7 @@ namespace client.ViewModels
         {
             try
             {
-                if (NewHotel.Name != null && NewHotel.Description != null && _countStars != "" && _selectedCountry.Code != "")
+                if (NewHotel.NameHotel != null && !string.IsNullOrEmpty(NewHotel.Description) && _countStars != "" && _selectedCountry.CountryCode != "")
                 {
                     if (!IsAllDigits(_countStars))
                     {
@@ -151,7 +151,8 @@ namespace client.ViewModels
                     }
                     else
                     {
-                        NewHotel.CountryCode = _selectedCountry.Code;
+                        NewHotel.CountryCode = _selectedCountry.CountryCode;
+                        NewHotel.CountOfStars = int.Parse(_countStars);
                         JsonContent contentCreate = JsonContent.Create(NewHotel);
                         HttpResponseMessage message = await _httpClient.PostAsync($"/HotelCreate", contentCreate);
                         string buf = await message.Content.ReadAsStringAsync();
@@ -163,12 +164,12 @@ namespace client.ViewModels
                 }
                 else
                 {
-                    if (NewHotel.Name == null)
+                    if (NewHotel.NameHotel == null)
                     {
                         string Messege = "Наименование отеля не заполнено!";
                         ButtonResult result = await MessageBoxManager.GetMessageBoxStandard("Сообщение с уведомлением о незаполненных полях!", Messege, ButtonEnum.Ok).ShowAsync();
                     }
-                    if (NewHotel.Description == null)
+                    if (string.IsNullOrEmpty(NewHotel.Description))
                     {
                         string Messege = "Описание отеля не заполнено!";
                         ButtonResult result = await MessageBoxManager.GetMessageBoxStandard("Сообщение с уведомлением о незаполненных полях!", Messege, ButtonEnum.Ok).ShowAsync();
@@ -178,7 +179,7 @@ namespace client.ViewModels
                         string Messege = "Не указано количество звёзд у отеля!";
                         ButtonResult result = await MessageBoxManager.GetMessageBoxStandard("Сообщение с уведомлением о незаполненных полях!", Messege, ButtonEnum.Ok).ShowAsync();
                     }
-                    if (_selectedCountry.Code == "")
+                    if (_selectedCountry.CountryCode == "")
                     {
                         string Messege = "Не выбрана страна, в которой находится отель!";
                         ButtonResult result = await MessageBoxManager.GetMessageBoxStandard("Сообщение с уведомлением о незаполненных полях!", Messege, ButtonEnum.Ok).ShowAsync();
@@ -195,7 +196,7 @@ namespace client.ViewModels
         {
             try
             {
-                if (NewHotel.Name != null && NewHotel.Description != null && _countStars != "" && _selectedCountry.Code != "")
+                if (NewHotel.NameHotel != null && !string.IsNullOrEmpty(NewHotel.Description) && _countStars != "" && _selectedCountry.CountryCode != "")
                 {
                     if (!IsAllDigits(_countStars))
                     {
@@ -209,7 +210,7 @@ namespace client.ViewModels
                     }
                     else
                     {
-                        NewHotel.CountryCode = _selectedCountry.Code;
+                        NewHotel.CountryCode = _selectedCountry.CountryCode;
                         NewHotel.CountryCodeNavigation = _selectedCountry;
                         NewHotel.CountOfStars = int.Parse(_countStars);
                         JsonContent contentUpdate = JsonContent.Create(NewHotel);
@@ -221,12 +222,12 @@ namespace client.ViewModels
                 }
                 else
                 {
-                    if (NewHotel.Name == null)
+                    if (NewHotel.NameHotel == null)
                     {
                         string Messege = "Наименование отеля не заполнено!";
                         ButtonResult result = await MessageBoxManager.GetMessageBoxStandard("Сообщение с уведомлением о незаполненных полях!", Messege, ButtonEnum.Ok).ShowAsync();
                     }
-                    if (NewHotel.Description == null)
+                    if (string.IsNullOrEmpty(NewHotel.Description))
                     {
                         string Messege = "Описание отеля не заполнено!";
                         ButtonResult result = await MessageBoxManager.GetMessageBoxStandard("Сообщение с уведомлением о незаполненных полях!", Messege, ButtonEnum.Ok).ShowAsync();
@@ -236,7 +237,7 @@ namespace client.ViewModels
                         string Messege = "Не указано количество звёзд у отеля!";
                         ButtonResult result = await MessageBoxManager.GetMessageBoxStandard("Сообщение с уведомлением о незаполненных полях!", Messege, ButtonEnum.Ok).ShowAsync();
                     }                    
-                    if (_selectedCountry.Code == "")
+                    if (_selectedCountry.CountryCode == "")
                     {
                         string Messege = "Не выбрана страна, в которой находится отель!";
                         ButtonResult result = await MessageBoxManager.GetMessageBoxStandard("Сообщение с уведомлением о незаполненных полях!", Messege, ButtonEnum.Ok).ShowAsync();

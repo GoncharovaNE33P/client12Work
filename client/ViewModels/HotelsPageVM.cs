@@ -142,6 +142,7 @@ namespace client.ViewModels
                 }
 
                 _hotels = JsonConvert.DeserializeObject<List<Hotel>>(buf);
+                _hotels = _hotels.OrderBy(x => x.IdHotel).ToList();
                 CountHotels = $"Список отелей, количество записей: {_hotels.Count}";
             }
             catch (Exception ex)
@@ -152,7 +153,7 @@ namespace client.ViewModels
 
         async Task DeleteHotel(int id)
         {
-            string Messege = $"Вы уверенны, что хотите удалить отель {HotelsList.FirstOrDefault(x => x.Id == id).Name}?";
+            string Messege = $"Вы уверенны, что хотите удалить отель {HotelsList.FirstOrDefault(x => x.IdHotel == id).NameHotel}?";
             ButtonResult result = await MessageBoxManager.GetMessageBoxStandard("Сообщение с уведомлением об удалении!", Messege, ButtonEnum.YesNo).ShowAsync();
             switch (result)
             {
