@@ -17,7 +17,7 @@
 		<StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
 			<StackPanel Orientation="Horizontal">
 				<TextBlock Classes="Head" Text="Введите текст для поиска:"></TextBlock>
-				<TextBox Classes="TBField" Text="{Binding Search}"></TextBox>
+				<TextBox Classes="TBField" Text="{Binding Search}" Watermark="Поиск..."></TextBox>
 			</StackPanel>
 
 			<StackPanel Orientation="Horizontal">

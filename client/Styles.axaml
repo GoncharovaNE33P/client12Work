@@ -76,6 +76,10 @@
 		<Setter Property="Margin" Value="10 10 0 0"></Setter>
 	</Style>
 
+	<Style Selector="TextBox.TBField /template/ TextBlock#PART_Watermark">
+		<Setter Property="FontSize" Value="12"/>
+	</Style>
+
 	<Style Selector="TextBox.TBFieldEdit">
 		<Setter Property="FontSize" Value="15"></Setter>
 		<Setter Property="FontWeight" Value="DemiBold"></Setter>
